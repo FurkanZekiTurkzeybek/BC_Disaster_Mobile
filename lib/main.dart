@@ -6,6 +6,8 @@ import 'package:web3dart/web3dart.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+import 'status_screen.dart';
+
 Future<void> main() async {
   runApp(const MyApp());
   await Firebase.initializeApp(
@@ -73,12 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<String> getContractAddress() async {
     final docRef = db.collection("users").doc("test");
     String contAddress = "";
-    /*docRef.get().then((FB.DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      String addr = data.entries.first.value.toString();
-    });*/
-    //This part is discarded.
-
     FB.DocumentSnapshot doc = await docRef.get();
     final data = doc.data() as Map<String, dynamic>;
     contAddress = data.entries.first.value.toString();
@@ -147,7 +143,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(name),
+            ToggleStatus(),
+            /*Text(name),
             Text(surname),
             Text(ssn),
             Text(address),
@@ -157,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     deploy();
                   });
                 },
-                child: Text("set")),
+                child: Text("set"))*/
           ],
         ),
       ),
