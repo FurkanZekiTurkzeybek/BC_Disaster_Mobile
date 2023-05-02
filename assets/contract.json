@@ -1,5 +1,14 @@
 [
   {
+    "constant": false,
+    "inputs": [],
+    "name": "setWreck",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "getName",
@@ -30,11 +39,48 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "getHelp",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "getHomeAddress",
     "outputs": [
       {
         "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "setSafe",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getSafe",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -58,6 +104,20 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "getWreck",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "getSurname",
     "outputs": [
       {
@@ -67,6 +127,15 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "setHelp",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -107,6 +176,57 @@
       }
     ],
     "name": "AddressChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "pSafe",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "name": "state",
+        "type": "string"
+      }
+    ],
+    "name": "Safe",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "pHelp",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "name": "state",
+        "type": "string"
+      }
+    ],
+    "name": "Help",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "pWreck",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "name": "state",
+        "type": "string"
+      }
+    ],
+    "name": "Wreck",
     "type": "event"
   }
 ]

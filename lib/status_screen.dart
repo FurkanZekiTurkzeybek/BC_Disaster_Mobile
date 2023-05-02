@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web3dart/credentials.dart';
+import 'main.dart';
 
-const List<Widget> fruits = <Widget>[
+const List<Widget> statusText = <Widget>[
   Text("I'm in wreck"),
   Text("I need aid"),
   Text("I'm safe")
 ];
-final List<bool> status = <bool>[false, false, false];
+final List<bool> statusBool = <bool>[false, false, false];
+final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
 
 class ToggleStatus extends StatefulWidget {
   @override
@@ -20,15 +23,31 @@ class _ToggleStatusState extends State<ToggleStatus> {
     return Center(
       child: Column(
         children: [
-          ToggleButtons(isSelected: status, children: fruits,
-          onPressed: (int index) => {
-            setState(() {
-              for (int i = 0; i < status.length; i++) {
-                status[i] = i == index;
-              }
-              print(fruits[index]);
-            })
-          },),
+          ToggleButtons(
+            isSelected: statusBool,
+            children: statusText,
+            onPressed: (int index) => {
+              setState(() {
+                for (int i = 0; i < statusBool.length; i++) {
+                  statusBool[i] = i == index;
+                }
+                switch (index) {
+                  case 0:
+                    {}
+                    break;
+
+                  case 1:
+                    {}
+                    break;
+
+                  case 2:
+                    {}
+                    break;
+                }
+                print(statusText[index]);
+              })
+            },
+          ),
         ],
       ),
     );

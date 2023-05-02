@@ -44,6 +44,56 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+const List<Widget> statusText = <Widget>[
+  Text("I'm in wreck"),
+  Text("I need aid"),
+  Text("I'm safe")
+];
+final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
+
+class ToggleStatus extends StatefulWidget {
+  @override
+  State<ToggleStatus> createState() => _ToggleStatusState();
+}
+
+class _ToggleStatusState extends State<ToggleStatus> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+      child: Column(
+        children: [
+          ToggleButtons(
+            isSelected: statusBool,
+            children: statusText,
+            onPressed: (int index) => {
+              setState(() {
+                for (int i = 0; i < statusBool.length; i++) {
+                  statusBool[i] = i == index;
+                }
+                switch (index) {
+                  case 0:
+                    {}
+                    break;
+
+                  case 1:
+                    {}
+                    break;
+
+                  case 2:
+                    {}
+                    break;
+                }
+                print(statusText[index]);
+              })
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   FB.FirebaseFirestore getDB() {
     return widget.db;
@@ -114,18 +164,36 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
-  Future<void> deploy() async {
+  Future<void> deploy(int func) async {
     Credentials key = EthPrivateKey.fromHex(
         "5097a6d03dc87e60520a428433f4ad15aaab20d5aaba9e4188ccb82c7ad2196f"); // metamask wallet private key
 
     final contract = await getContract();
 
-    final function = contract.function("setHomeAddress");
+    ContractFunction function = contract.function("setSafe");
+
+    switch (func) {
+      case 0:
+        {
+          function = contract.function("setWreck");
+        }
+        break;
+      case 1:
+        {
+          function = contract.function("setHelp");
+        }
+        break;
+      case 2:
+        {
+          function = contract.function("setSafe");
+        }
+        break;
+    }
 
     await ethClient.sendTransaction(
         key,
         Transaction.callContract(
-            contract: contract, function: function, parameters: ["flutter"]),
+            contract: contract, function: function, parameters: []),
         chainId: 11155111);
 
     Future.delayed(const Duration(seconds: 20), () {
@@ -143,8 +211,26 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ToggleStatus(),
-            /*Text(name),
+            Center(
+              child: Column(
+                children: [
+                  ToggleButtons(
+                    isSelected: statusBool,
+                    children: statusText,
+                    onPressed: (int index) => {
+                      setState(() {
+                        for (int i = 0; i < statusBool.length; i++) {
+                          statusBool[i] = i == index;
+                        }
+                        deploy(index);
+
+                        print(statusText[index]);
+                      })
+                    },
+                  ),
+                ],
+              ),
+            ), /*Text(name),
             Text(surname),
             Text(ssn),
             Text(address),
