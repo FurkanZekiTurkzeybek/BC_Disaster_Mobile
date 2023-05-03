@@ -181,30 +181,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      width: buttonBoxWidth,
-                      height: buttonBoxHeight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: returnStatusButton(0),
-                      ),
-                    ),
-                    SizedBox(
-                      width: buttonBoxWidth,
-                      height: buttonBoxHeight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: returnStatusButton(1),
-                      ),
-                    ),
-                    SizedBox(
-                      width: buttonBoxWidth,
-                      height: buttonBoxHeight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: returnStatusButton(2),
-                      ),
-                    ),
+                    returnStatusBox(0),
+                    returnStatusBox(1),
+                    returnStatusBox(2),
                   ],
                 ),
               ),
@@ -215,30 +194,37 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-//some methods and variables to reuse
-  ElevatedButton returnStatusButton(int statusIndex) {
-    return ElevatedButton(
-      onPressed: () => deploy(statusIndex),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.0),
+  SizedBox returnStatusBox(int statusIndex) {
+    return SizedBox(
+      width: 200.0,
+      height: 80.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: () => deploy(statusIndex),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0),
+            ),
+            backgroundColor: statusBool[statusIndex]
+                ? Colors.blue
+                : statusButtonColours[statusIndex]?.withOpacity(0.7),
+          ),
+          child: Text(statusText[statusIndex],
+              style: const TextStyle(
+                fontSize: 20,
+              )),
         ),
-        backgroundColor: statusBool[statusIndex]
-            ? Colors.blue
-            : statusButtonColours[statusIndex]?.withOpacity(0.7),
       ),
-      child: Text(statusText[statusIndex],
-          style: const TextStyle(
-            fontSize: 20,
-          )),
     );
   }
+
 }
 
+//some methods and variables to reuse for the buttons
 List statusButtonColours = [
   Colors.red[800],
   Colors.blue[800],
   Colors.green[800]
 ];
-const double buttonBoxWidth = 200.0;
-const double buttonBoxHeight = 80.0;
+
