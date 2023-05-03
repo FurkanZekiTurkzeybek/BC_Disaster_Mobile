@@ -5,16 +5,16 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
 import 'status_screen.dart';
 
 Future<void> main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).whenComplete(() {
     print("completed");
   });
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'HelpChain'),
     );
   }
 }
@@ -44,55 +44,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-const List<Widget> statusText = <Widget>[
-  Text("I'm in wreck"),
-  Text("I need aid"),
-  Text("I'm safe")
-];
+const List<String> statusText = <String>[("IN WRECK"), ("NEED AID"), ("SAFE")];
 final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
-
-class ToggleStatus extends StatefulWidget {
-  @override
-  State<ToggleStatus> createState() => _ToggleStatusState();
-}
-
-class _ToggleStatusState extends State<ToggleStatus> {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Center(
-      child: Column(
-        children: [
-          ToggleButtons(
-            isSelected: statusBool,
-            children: statusText,
-            onPressed: (int index) => {
-              setState(() {
-                for (int i = 0; i < statusBool.length; i++) {
-                  statusBool[i] = i == index;
-                }
-                switch (index) {
-                  case 0:
-                    {}
-                    break;
-
-                  case 1:
-                    {}
-                    break;
-
-                  case 2:
-                    {}
-                    break;
-                }
-                print(statusText[index]);
-              })
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class _MyHomePageState extends State<MyHomePage> {
   FB.FirebaseFirestore getDB() {
@@ -105,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
   late Web3Client ethClient;
 
   final String myAddress =
-      "0x1cEDc507F8478ECAc0fc6b710c8C039050AD0aa8"; // Metamask wallet
+      "0xfF266b4A997E30C195C5521819b8E75baEB7b8a1"; // Metamask wallet
   final String bcURL =
-      "https://sepolia.infura.io/v3/1670a51d46d74984873f6a273c285335";
+      "https://sepolia.infura.io/v3/2af035557b3b4dcd9f3278edb7eb7453";
 
   var name = "Name";
   var surname = "Surname";
@@ -166,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> deploy(int func) async {
     Credentials key = EthPrivateKey.fromHex(
-        "5097a6d03dc87e60520a428433f4ad15aaab20d5aaba9e4188ccb82c7ad2196f"); // metamask wallet private key
+        "5865c125b5740e6596348f6d787e6191f3fe6db79cd9094ab2adf8f61e28197c"); // metamask wallet private key
 
     final contract = await getContract();
 
@@ -204,6 +157,107 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/crop.jpg"),
+                fit: BoxFit.fill
+            )
+        ),
+        child: Expanded(
+          child: Column(
+            children: [
+              const SizedBox(height: 100),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 85),
+                child: Text(
+                  'Choose a Status',
+                  style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey
+                  ),
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 200.0,
+                      height: 80,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => deploy(0),
+                          child: textSize(0),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                            ),
+                            backgroundColor: statusBool[0] ? Colors.blue : Colors.red[800]?.withOpacity(0.7),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200.0,
+                      height: 80,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => deploy(1),
+                          child: textSize(1),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                            ),
+                            backgroundColor: statusBool[1] ? Colors.blue : Colors.blue[800]?.withOpacity(0.7),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200.0,
+                      height: 80,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => deploy(2),
+                          child: textSize(2),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                            ),
+                            backgroundColor: statusBool[2] ? Colors.blue : Colors.green[800]?.withOpacity(0.7),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  Text textSize(int i) {
+    return Text(statusText[i],
+        style: const TextStyle(
+          fontSize: 20,
+        ));
+  }
+
+/*@override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -230,20 +284,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-            ), /*Text(name),
-            Text(surname),
-            Text(ssn),
-            Text(address),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    deploy();
-                  });
-                },
-                child: Text("set"))*/
+            ),
           ],
         ),
       ),
     );
   }
+}*/
 }
