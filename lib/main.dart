@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart' as FB;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -117,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
-  Future<void> deploy(int func) async {
+  Future<void> deploy(int statusFunction) async {
     Credentials key = EthPrivateKey.fromHex(
         "5865c125b5740e6596348f6d787e6191f3fe6db79cd9094ab2adf8f61e28197c"); // metamask wallet private key
 
@@ -125,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     ContractFunction function = contract.function("setSafe");
 
-    switch (func) {
+    switch (statusFunction) {
       case 0:
         {
           function = contract.function("setWreck");
@@ -160,10 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: DecoratedBox(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/images/crop.jpg"),
-                fit: BoxFit.fill
-            )
-        ),
+                image: AssetImage("assets/images/crop.jpg"), fit: BoxFit.fill)),
         child: Expanded(
           child: Column(
             children: [
@@ -175,8 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey
-                  ),
+                      color: Colors.blueGrey),
                 ),
               ),
               Center(
@@ -184,57 +182,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                      width: 200.0,
-                      height: 80,
+                      width: buttonBoxWidth,
+                      height: buttonBoxHeight,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () => deploy(0),
-                          child: textSize(0),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                            backgroundColor: statusBool[0] ? Colors.blue : Colors.red[800]?.withOpacity(0.7),
-                          ),
-                        ),
+                        child: returnStatusButton(0),
                       ),
                     ),
                     SizedBox(
-                      width: 200.0,
-                      height: 80,
+                      width: buttonBoxWidth,
+                      height: buttonBoxHeight,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () => deploy(1),
-                          child: textSize(1),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                            backgroundColor: statusBool[1] ? Colors.blue : Colors.blue[800]?.withOpacity(0.7),
-                          ),
-                        ),
+                        child: returnStatusButton(1),
                       ),
                     ),
                     SizedBox(
-                      width: 200.0,
-                      height: 80,
+                      width: buttonBoxWidth,
+                      height: buttonBoxHeight,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () => deploy(2),
-                          child: textSize(2),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                            backgroundColor: statusBool[2] ? Colors.blue : Colors.green[800]?.withOpacity(0.7),
-                          ),
-                        ),
+                        child: returnStatusButton(2),
                       ),
                     ),
                   ],
@@ -247,48 +215,30 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-  Text textSize(int i) {
-    return Text(statusText[i],
-        style: const TextStyle(
-          fontSize: 20,
-        ));
-  }
-
-/*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: Column(
-                children: [
-                  ToggleButtons(
-                    isSelected: statusBool,
-                    children: statusText,
-                    onPressed: (int index) => {
-                      setState(() {
-                        for (int i = 0; i < statusBool.length; i++) {
-                          statusBool[i] = i == index;
-                        }
-                        deploy(index);
-
-                        print(statusText[index]);
-                      })
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+//some methods and variables to reuse
+  ElevatedButton returnStatusButton(int statusIndex) {
+    return ElevatedButton(
+      onPressed: () => deploy(statusIndex),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
         ),
+        backgroundColor: statusBool[statusIndex]
+            ? Colors.blue
+            : statusButtonColours[statusIndex]?.withOpacity(0.7),
       ),
+      child: Text(statusText[statusIndex],
+          style: const TextStyle(
+            fontSize: 20,
+          )),
     );
   }
-}*/
 }
+
+List statusButtonColours = [
+  Colors.red[800],
+  Colors.blue[800],
+  Colors.green[800]
+];
+const double buttonBoxWidth = 200.0;
+const double buttonBoxHeight = 80.0;
