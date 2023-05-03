@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "56003422609",
+    "project_id": "bc-demo-44137",
+    "storage_bucket": "bc-demo-44137.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56003422609:android:c4e99a2450f019f5581230",
+        "android_client_info": {
+          "package_name": "com.example.dapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56003422609-hliif9229g4fn8tmunsstgf4kvc55dto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGdk4PQpIGgc_wsy9u11cUq09GajlHPX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56003422609-hliif9229g4fn8tmunsstgf4kvc55dto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
