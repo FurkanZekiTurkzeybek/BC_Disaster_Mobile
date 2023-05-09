@@ -9,15 +9,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'status_screen.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  ).whenComplete(() {
-    print("completed");
-  });
-  runApp(const MyApp());
-}
+// Future<void> main() async {
+//   // WidgetsFlutterBinding.ensureInitialized();
+//   // await Firebase.initializeApp(
+//   //   options: DefaultFirebaseOptions.currentPlatform,
+//   // ).whenComplete(() {
+//   //   print("completed");
+//   // });
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -218,7 +218,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
 }
 
 //some methods and variables to reuse for the buttons
@@ -227,4 +226,3 @@ List statusButtonColours = [
   Colors.blue[800],
   Colors.green[800]
 ];
-
