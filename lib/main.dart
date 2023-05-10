@@ -46,7 +46,11 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-const List<String> statusText = <String>[("IN WRECK"), ("NEED AID"), ("SAFE")];
+const List<String> statusText = <String>[
+  ("IN DISTRESS"),
+  ("NEED AID"),
+  ("SAFE")
+];
 final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
 
 class _MyHomePageState extends State<MyHomePage> {
