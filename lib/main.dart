@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const Padding(
                 padding: EdgeInsets.only(bottom: 85),
                 child: Text(
-                  'Choose a Status',
+                  'Choose Your Status',
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -200,24 +200,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   SizedBox returnStatusBox(int statusIndex) {
     return SizedBox(
-      width: 200.0,
-      height: 80.0,
+      width: double.infinity,
+      height: 130.0,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: ElevatedButton(
           onPressed: () => deploy(statusIndex),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24.0),
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            backgroundColor: statusBool[statusIndex]
+            primary: statusBool[statusIndex]
                 ? Colors.blue
                 : statusButtonColours[statusIndex]?.withOpacity(0.7),
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            // minimumSize: Size(double.infinity, 100.0),
           ),
-          child: Text(statusText[statusIndex],
-              style: const TextStyle(
-                fontSize: 20,
-              )),
+          child: Text(
+            statusText[statusIndex],
+            style: TextStyle(
+              fontSize: 45,
+              fontWeight: FontWeight.w400,
+              color: statusBool[statusIndex]
+                  ? Colors.white
+                  : Color.fromARGB(255, 224, 223, 223),
+            ),
+          ),
         ),
       ),
     );
