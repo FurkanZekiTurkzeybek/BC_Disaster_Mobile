@@ -224,6 +224,6 @@ Future<String> readContractAddress() async {
   if (fileContent != null) {
     return fileContent;
   } else {
-    return "0";
+    return "1";
   }
 }
