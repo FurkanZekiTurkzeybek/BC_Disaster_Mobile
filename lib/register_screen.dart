@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dapp/main.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as HTTP;
 
 import 'dart:io';
 import 'firebase_options.dart';
-import 'main.dart' as mainPage;
+
+import "firebase_methods.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +31,8 @@ void main() async {
 }
 
 class InputPage extends StatefulWidget {
+  FirebaseInit thisFirebase = new FirebaseInit();
+
   @override
   _InputPageState createState() {
     return _InputPageState();
@@ -90,33 +95,39 @@ class _InputPageState extends State<InputPage> {
                   _ssn = value;
                 });
               }),
-
               SizedBox(height: 16.0),
-
               ElevatedButton(
                 onPressed: () async {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MyApp()));
-                  Person person = Person(
-                      name: _name,
-                      surname: _surname,
-                      address: _address,
-                      ssn: _ssn);
-                  final url = Uri.parse('http://10.0.2.2:3000/api/person');
-                  final response = await HTTP.post(
-                    url,
-                    headers: {'Content-Type': 'application/json'},
-                    body: json.encode({
-                      'name': person.name,
-                      'surname': person.surname,
-                      'address': person.address,
-                      'ssn': person.ssn,
-                    }),
-                  );
-                  if (response.statusCode == 200) {
-                    print('Person saved successfully!');
+                  bool SSNnotFound =
+                      await widget.thisFirebase.checkIfSSNExists(_ssn);
+
+                  if (SSNnotFound == false) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const MyApp()));
+                    Person person = Person(
+                        name: _name,
+                        surname: _surname,
+                        address: _address,
+                        ssn: _ssn);
+                    final url = Uri.parse('http://10.0.2.2:3000/api/person');
+                    final response = await HTTP.post(
+                      url,
+                      headers: {'Content-Type': 'application/json'},
+                      body: json.encode({
+                        'name': person.name,
+                        'surname': person.surname,
+                        'address': person.address,
+                        'ssn': person.ssn,
+                      }),
+                    );
+                    if (response.statusCode == 200) {
+                      print('Person saved successfully!');
+                    } else {
+                      print('Failed to save person: ${response.statusCode}');
+                    }
                   } else {
-                    print('Failed to save person: ${response.statusCode}');
+                    //print a box that informs the user.
+                    print("The SSN is already exists");
                   }
                 },
                 child: const Text('Submit'),
@@ -124,8 +135,6 @@ class _InputPageState extends State<InputPage> {
                   backgroundColor: Colors.grey,
                 ),
               ),
-
-              // bu kisim server js ile ilgili
             ],
           ),
         ),

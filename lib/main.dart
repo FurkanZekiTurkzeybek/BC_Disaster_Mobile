@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart' as FB;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,17 +7,7 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'status_screen.dart';
-
-// Future<void> main() async {
-//   // WidgetsFlutterBinding.ensureInitialized();
-//   // await Firebase.initializeApp(
-//   //   options: DefaultFirebaseOptions.currentPlatform,
-//   // ).whenComplete(() {
-//   //   print("completed");
-//   // });
-//   runApp(const MyApp());
-// }
+import 'firebase_methods.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -40,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  var db = FB.FirebaseFirestore.instance;
+  FirebaseInit thisFirebase = new FirebaseInit();
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -54,11 +44,7 @@ const List<String> statusText = <String>[
 final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
 
 class _MyHomePageState extends State<MyHomePage> {
-  FB.FirebaseFirestore getDB() {
-    return widget.db;
-  }
-
-  late var db = getDB();
+  late var db = widget.thisFirebase.db;
 
   late Client httpClient;
   late Web3Client ethClient;
@@ -81,21 +67,21 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Future<String> getContractAddress() async {
-    final docRef = db.collection("users").doc("test");
-    String contAddress = "";
-    FB.DocumentSnapshot doc = await docRef.get();
-    final data = doc.data() as Map<String, dynamic>;
-    contAddress = data.entries.first.value.toString();
-    print("First print is: $contAddress");
-    return contAddress;
-  }
+  // Future<String> getContractAddress() async {
+  //   final docRef = db.collection("users").doc("test");
+  //   String contAddress = "";
+  //   FB.DocumentSnapshot doc = await docRef.get();
+  //   final data = doc.data() as Map<String, dynamic>;
+  //   contAddress = data.entries.first.value.toString();
+  //   print("First print is: $contAddress");
+  //   return contAddress;
+  // }
 
   Future<DeployedContract> getContract() async {
     String abiFile = await rootBundle.loadString("assets/contract.json");
 
     String contractAddress =
-        await getContractAddress(); // deployed contract address
+        await readContractAddress(); // deployed contract address
 
     final contract = DeployedContract(ContractAbi.fromJson(abiFile, "Person"),
         EthereumAddress.fromHex(contractAddress));
@@ -174,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const Padding(
                 padding: EdgeInsets.only(bottom: 85),
                 child: Text(
-                  'Choose a Status',
+                  'Your Status',
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -230,3 +216,14 @@ List statusButtonColours = [
   Colors.blue[800],
   Colors.green[800]
 ];
+final List<bool> statusBool = <bool>[false, false, false];
+
+Future<String> readContractAddress() async {
+  print("Method is running");
+  String fileContent = await rootBundle.loadString('assets/hash.txt');
+  if (fileContent != null) {
+    return fileContent;
+  } else {
+    return "0";
+  }
+}
