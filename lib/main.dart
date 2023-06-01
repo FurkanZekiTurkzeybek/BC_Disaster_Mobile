@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart' as FB;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -218,12 +220,30 @@ List statusButtonColours = [
 ];
 final List<bool> statusBool = <bool>[false, false, false];
 
+// Future<String> readContractAddress() async {
+//   String fileContent = await rootBundle.loadString('assets/hash.txt');
+//   if (fileContent != null) {
+//     return fileContent;
+//   } else {
+//     return "1";
+//   }
+// }
+
 Future<String> readContractAddress() async {
-  print("Method is running");
-  String fileContent = await rootBundle.loadString('assets/hash.txt');
-  if (fileContent != null) {
-    return fileContent;
-  } else {
-    return "1";
-  }
+  print("readContAddrr method is working");
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File("${directory.path}/file.txt");
+
+  final data = await file.readAsString(encoding: utf8);
+  return data;
+
+  // if(await file.exists()) {
+  //   print("readContrAddrr: File exists");
+  //   return await file.readAsString();
+  // }
+  // else {
+  //   print("readContrAddrr: File does not exist");
+  //   return "file does not exitst";
+  // }
 }
+

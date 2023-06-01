@@ -12,6 +12,7 @@ import 'dart:io';
 import 'firebase_options.dart';
 
 import "firebase_methods.dart";
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,8 @@ class InputPage extends StatefulWidget {
     return _InputPageState();
   }
 }
+
+
 
 class Person {
   final String name;
@@ -120,8 +123,13 @@ class _InputPageState extends State<InputPage> {
                         'ssn': person.ssn,
                       }),
                     );
+
                     if (response.statusCode == 200) {
-                      print('Person saved successfully!');
+                      // hash = response.body;
+                      // print('Person saved successfully!');
+                      // print(hash);
+                      writeFile(response.body.toString());
+
                     } else {
                       print('Failed to save person: ${response.statusCode}');
                     }
@@ -167,4 +175,10 @@ class _InputPageState extends State<InputPage> {
       ),
     );
   }
+}
+
+Future<void> writeFile(String content) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File("${directory.path}/file.txt");
+  await file.writeAsString(content);
 }
