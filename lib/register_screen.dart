@@ -14,52 +14,38 @@ import 'firebase_options.dart';
 import "firebase_methods.dart";
 import 'package:path_provider/path_provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MaterialApp(
-    title: "randomTitle",
-    home: InputPage(),
-  ));
-  var client = HttpClient();
-  var request = await client.getUrl(
-      Uri.parse('https://10.0.2.2:3000')); //server ile ilgili seyler calismadi
-  var response = await request.close();
-  var responseBody = await response.transform(utf8.decoder).join();
-  print(responseBody);
-}
-
-class InputPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   FirebaseInit thisFirebase = new FirebaseInit();
 
   @override
-  _InputPageState createState() {
-    return _InputPageState();
+  _RegisterPageState createState() {
+    return _RegisterPageState();
   }
 }
-
-
 
 class Person {
   final String name;
   final String surname;
   final String address;
   final String ssn;
+  final String password;
+  final String hash;
 
   Person(
       {required this.name,
       required this.surname,
       required this.address,
-      required this.ssn});
+      required this.ssn,
+      required this.password,
+      required this.hash});
 }
 
-class _InputPageState extends State<InputPage> {
+class _RegisterPageState extends State<RegisterPage> {
   var _name;
   var _surname;
   var _address;
   var _ssn;
+  var _password;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +84,11 @@ class _InputPageState extends State<InputPage> {
                   _ssn = value;
                 });
               }),
+              buildRegisterTextField("Password", (value) {
+                setState(() {
+                  _password = value;
+                });
+              }),
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
@@ -108,10 +99,13 @@ class _InputPageState extends State<InputPage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => const MyApp()));
                     Person person = Person(
-                        name: _name,
-                        surname: _surname,
-                        address: _address,
-                        ssn: _ssn);
+                      hash: "",
+                      name: _name,
+                      surname: _surname,
+                      address: _address,
+                      ssn: _ssn,
+                      password: _password,
+                    );
                     final url = Uri.parse('http://10.0.2.2:3000/api/person');
                     final response = await HTTP.post(
                       url,
@@ -121,6 +115,7 @@ class _InputPageState extends State<InputPage> {
                         'surname': person.surname,
                         'address': person.address,
                         'ssn': person.ssn,
+                        'password': person.password
                       }),
                     );
 
@@ -128,8 +123,7 @@ class _InputPageState extends State<InputPage> {
                       // hash = response.body;
                       // print('Person saved successfully!');
                       // print(hash);
-                      writeFile(response.body.toString());
-
+                      await writeFile(response.body.toString());
                     } else {
                       print('Failed to save person: ${response.statusCode}');
                     }

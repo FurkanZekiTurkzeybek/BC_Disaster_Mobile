@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart' as FB;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dapp/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -23,6 +25,33 @@ class FirebaseInit extends StatefulWidget {
 
     final List <FB.DocumentSnapshot> documents = result.docs;
     return documents.isNotEmpty;
+  }
+
+  Future<Person> checkIfCorrect(String givenSSN, String givenPassword) async {
+    final FB.QuerySnapshot result = await FB.FirebaseFirestore.instance
+        .collection("Users")
+        .where("SSN", isEqualTo: givenSSN)
+        .where("password",isEqualTo: givenPassword)
+        .limit(1)
+        .get();
+    final List <FB.DocumentSnapshot> documents = result.docs;
+    String docId = documents[0].id;
+
+    DocumentReference documentRef =
+      FirebaseFirestore.instance.collection('Users').doc(docId);
+    DocumentSnapshot documentSnapshot = await documentRef.get();
+    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+
+    Person retPerson = Person(name: data['name'],
+        surname: data['surname'],
+        address: data['address'],
+        ssn: data["SSN"],
+        password:data["password"],
+        hash: data["hash"]);
+
+    return retPerson;
+
+
   }
 
   @override
