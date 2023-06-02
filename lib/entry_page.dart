@@ -30,11 +30,11 @@ class EntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black54,
-        title: Text('Register'),
-      ),
-      resizeToAvoidBottomInset: false,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black54,
+      //   title: Text('Register'),
+      // ),
+      // resizeToAvoidBottomInset: false,
       body: DecoratedBox(
         decoration: const BoxDecoration(
             image: DecorationImage(
@@ -51,7 +51,7 @@ class EntryPage extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => RegisterPage()))
                 },
-                child: const Text('Register'),
+                child: const Text('Kayıt ol'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),
@@ -61,7 +61,7 @@ class EntryPage extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()))
                 },
-                child: const Text('Login'),
+                child: const Text('Giriş yap'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),

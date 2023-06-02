@@ -39,9 +39,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 const List<String> statusText = <String>[
-  ("IN DISTRESS"),
-  ("NEED AID"),
-  ("SAFE")
+  ("Ekip talebi"),
+  ("Yardım talebi"),
+  ("Güvendeyim")
 ];
 final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
 
@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const Padding(
                 padding: EdgeInsets.only(bottom: 85),
                 child: Text(
-                  'Your Status',
+                  'Durumunuz',
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -176,6 +176,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     returnStatusBox(0),
                     returnStatusBox(1),
                     returnStatusBox(2),
+                    ElevatedButton(
+                        onPressed: () => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangeAddressWidget(title: 'Adres Değiştir',)))
+                            },
+                        child: const Text("Adres değiştir"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                        ))
                   ],
                 ),
               ),
@@ -206,6 +218,177 @@ class _MyHomePageState extends State<MyHomePage> {
               style: const TextStyle(
                 fontSize: 20,
               )),
+        ),
+      ),
+    );
+  }
+}
+
+class ChangeAddressWidget extends StatefulWidget {
+  ChangeAddressWidget({super.key, required this.title});
+
+  final String title;
+
+  FirebaseInit thisFirebase = new FirebaseInit();
+
+  @override
+  State<StatefulWidget> createState() => _ChangeAddressWidgetState();
+}
+
+class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
+
+  var _newAddress;
+
+
+  late var db = widget.thisFirebase.db;
+
+  late Client httpClient;
+  late Web3Client ethClient;
+
+  final String myAddress =
+      "0xfF266b4A997E30C195C5521819b8E75baEB7b8a1"; // Metamask wallet
+  final String bcURL =
+      "https://sepolia.infura.io/v3/2af035557b3b4dcd9f3278edb7eb7453";
+
+  var name = "Name";
+  var surname = "Surname";
+  var ssn = "123456789";
+  var address = "TR";
+
+  @override
+  void initState() {
+    httpClient = Client();
+    ethClient = Web3Client(bcURL, httpClient);
+    getContractContents();
+    super.initState();
+  }
+
+  // Future<String> getContractAddress() async {
+  //   final docRef = db.collection("users").doc("test");
+  //   String contAddress = "";
+  //   FB.DocumentSnapshot doc = await docRef.get();
+  //   final data = doc.data() as Map<String, dynamic>;
+  //   contAddress = data.entries.first.value.toString();
+  //   print("First print is: $contAddress");
+  //   return contAddress;
+  // }
+
+  Future<DeployedContract> getContract() async {
+    String abiFile = await rootBundle.loadString("assets/contract.json");
+
+    String contractAddress =
+    await readContractAddress(); // deployed contract address
+
+    final contract = DeployedContract(ContractAbi.fromJson(abiFile, "Person"),
+        EthereumAddress.fromHex(contractAddress));
+
+    return contract;
+  }
+
+  Future<List<dynamic>> callFunction(String name) async {
+    final contract = await getContract();
+    final function = contract.function(name);
+    final result = await ethClient
+        .call(contract: contract, function: function, params: []);
+    return result;
+  }
+
+  Future<void> getContractContents() async {
+    List<dynamic> resultsA = await callFunction("getName");
+    List<dynamic> resultsB = await callFunction("getSurname");
+    List<dynamic> resultsC = await callFunction("getSSN");
+    List<dynamic> resultsD = await callFunction("getHomeAddress");
+    name = resultsA[0];
+    surname = resultsB[0];
+    ssn = resultsC[0];
+    address = resultsD[0];
+    setState(() {});
+  }
+
+  Future<void> deploy(String newAddress) async {
+    Credentials key = EthPrivateKey.fromHex(
+        "5865c125b5740e6596348f6d787e6191f3fe6db79cd9094ab2adf8f61e28197c"); // metamask wallet private key
+
+    final contract = await getContract();
+
+    ContractFunction function = contract.function("setHomeAddress");
+
+
+
+    await ethClient.sendTransaction(
+        key,
+        Transaction.callContract(
+            contract: contract, function: function, parameters: [newAddress]),
+        chainId: 11155111);
+
+    Future.delayed(const Duration(seconds: 20), () {
+      getContractContents();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black54,
+        title: Text('Adres Değiştir'),
+      ),
+      resizeToAvoidBottomInset: false,
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/crop.jpg"), fit: BoxFit.fill)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 200.0,
+                height: 200.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            _newAddress = value;
+                          });
+                        },
+                        style: const TextStyle(color: Colors.white),
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white24,
+                            labelText: "Adres Değiştir",
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100)),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              // Set the desired border color when focused
+                              borderRadius: BorderRadius.circular(100),
+                            )),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                      ),
+                      onPressed: () async {
+                        deploy(_newAddress);
+                      },
+                      child: const Text('Değiştir'),
+                    ),
+                  ]),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -246,4 +429,3 @@ Future<String> readContractAddress() async {
   //   return "file does not exitst";
   // }
 }
-
