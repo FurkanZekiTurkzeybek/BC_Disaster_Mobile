@@ -52,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black54,
-        title: Text('Kayıt ol'),
+        title: Text('Register'),
       ),
       resizeToAvoidBottomInset: false,
       body: DecoratedBox(
@@ -64,27 +64,27 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              buildRegisterTextField("İsim", (value) {
+              buildRegisterTextField("Name", (value) {
                 setState(() {
                   _name = value;
                 });
               }),
-              buildRegisterTextField("Soyisim", (value) {
+              buildRegisterTextField("Surname", (value) {
                 setState(() {
                   _surname = value;
                 });
               }),
-              buildRegisterTextField("Adres", (value) {
+              buildRegisterTextField("Address", (value) {
                 setState(() {
                   _address = value;
                 });
               }),
-              buildRegisterTextField("TCKN", (value) {
+              buildRegisterTextField("SSN", (value) {
                 setState(() {
                   _ssn = value;
                 });
               }),
-              buildRegisterTextField("Parola", (value) {
+              buildRegisterTextField("Password", (value) {
                 setState(() {
                   _password = value;
                 });
@@ -132,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     print("The SSN is already exists");
                   }
                 },
-                child: const Text('Kayıt ol'),
+                child: const Text('Register'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),

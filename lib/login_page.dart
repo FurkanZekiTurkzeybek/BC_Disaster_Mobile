@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black54,
-        title: Text('Kayit ol'),
+        title: Text('Log In'),
       ),
       resizeToAvoidBottomInset: false,
       body: DecoratedBox(
@@ -44,12 +44,12 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              buildRegisterTextField("TCKN", (value) {
+              buildRegisterTextField("SSN", (value) {
                 setState(() {
                   _SSN = value;
                 });
               }),
-              buildRegisterTextFieldPassword("Parola", (value) {
+              buildRegisterTextFieldPassword("Password", (value) {
                 setState(() {
                   _password = value;
                 });
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("There are no such accounts");
                   }
                 },
-                child: const Text('Giriş'),
+                child: const Text('Log In'),
               ),
             ],
           ),

@@ -15,6 +15,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     title: "randomTitle",
     home: EntryPage(),
   ));
@@ -51,7 +52,7 @@ class EntryPage extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => RegisterPage()))
                 },
-                child: const Text('Kayıt ol'),
+                child: const Text('Register'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),
@@ -61,7 +62,7 @@ class EntryPage extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()))
                 },
-                child: const Text('Giriş yap'),
+                child: const Text('Log In'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),

@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -39,9 +40,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 const List<String> statusText = <String>[
-  ("Ekip talebi"),
-  ("Yardım talebi"),
-  ("Güvendeyim")
+  ("In distress"),
+  ("Need Help"),
+  ("Safe")
 ];
 final List<Color> statDefColors = [Colors.red, Colors.blue, Colors.green];
 
@@ -162,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const Padding(
                 padding: EdgeInsets.only(bottom: 85),
                 child: Text(
-                  'Durumunuz',
+                  'Your Status',
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -181,10 +182,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChangeAddressWidget(title: 'Adres Değiştir',)))
+                                      builder: (context) => ChangeAddressWidget(
+                                            title: 'Change Address',
+                                          )))
                             },
-                        child: const Text("Adres değiştir"),
+                        child: const Text("Change Address"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey,
                         ))
@@ -200,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   SizedBox returnStatusBox(int statusIndex) {
     return SizedBox(
-      width: 200.0,
+      width: 250.0,
       height: 80.0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -236,9 +238,7 @@ class ChangeAddressWidget extends StatefulWidget {
 }
 
 class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
-
   var _newAddress;
-
 
   late var db = widget.thisFirebase.db;
 
@@ -277,7 +277,7 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
     String abiFile = await rootBundle.loadString("assets/contract.json");
 
     String contractAddress =
-    await readContractAddress(); // deployed contract address
+        await readContractAddress(); // deployed contract address
 
     final contract = DeployedContract(ContractAbi.fromJson(abiFile, "Person"),
         EthereumAddress.fromHex(contractAddress));
@@ -313,8 +313,6 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
 
     ContractFunction function = contract.function("setHomeAddress");
 
-
-
     await ethClient.sendTransaction(
         key,
         Transaction.callContract(
@@ -331,7 +329,7 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black54,
-        title: Text('Adres Değiştir'),
+        title: Text('Change Address'),
       ),
       resizeToAvoidBottomInset: false,
       body: DecoratedBox(
@@ -362,7 +360,7 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white24,
-                            labelText: "Adres Değiştir",
+                            labelText: "Change Address",
                             labelStyle: const TextStyle(
                               color: Colors.white,
                             ),
@@ -382,7 +380,7 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
                       onPressed: () async {
                         deploy(_newAddress);
                       },
-                      child: const Text('Değiştir'),
+                      child: const Text('Change'),
                     ),
                   ]),
                 ),
