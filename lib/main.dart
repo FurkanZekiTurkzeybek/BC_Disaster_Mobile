@@ -318,6 +318,26 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
         Transaction.callContract(
             contract: contract, function: function, parameters: [newAddress]),
         chainId: 11155111);
+    deploySafe();
+
+    Future.delayed(const Duration(seconds: 20), () {
+      getContractContents();
+    });
+  }
+
+  Future<void> deploySafe() async {
+    Credentials key = EthPrivateKey.fromHex(
+        "5865c125b5740e6596348f6d787e6191f3fe6db79cd9094ab2adf8f61e28197c"); // metamask wallet private key
+
+    final contract = await getContract();
+
+    ContractFunction function = contract.function("setSafe");
+
+    await ethClient.sendTransaction(
+        key,
+        Transaction.callContract(
+            contract: contract, function: function, parameters: []),
+        chainId: 11155111);
 
     Future.delayed(const Duration(seconds: 20), () {
       getContractContents();
