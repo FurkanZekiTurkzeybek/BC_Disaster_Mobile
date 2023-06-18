@@ -42,9 +42,9 @@ class FirebaseInit extends StatefulWidget {
     DocumentSnapshot documentSnapshot = await documentRef.get();
     Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
 
-    Person retPerson = Person(name: data['name'],
-        surname: data['surname'],
-        address: data['address'],
+    Person retPerson = Person(name: "def Name",
+        surname: "def Surname",
+        address: "def address",
         ssn: data["SSN"],
         password:data["password"],
         hash: data["hash"]);

@@ -332,16 +332,29 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
 
     ContractFunction function = contract.function("setHomeAddress");
 
-    await ethClient.sendTransaction(
-        key,
-        Transaction.callContract(
-            contract: contract, function: function, parameters: [newAddress]),
-        chainId: 11155111);
-    deploySafe();
+    await ethClient
+        .sendTransaction(
+            key,
+            Transaction.callContract(
+                contract: contract,
+                function: function,
+                parameters: [newAddress]),
+            chainId: 11155111)
+        .then((value) async {
+      ContractFunction function = contract.function("setSafe");
 
-    Future.delayed(const Duration(seconds: 20), () {
-      getContractContents();
+      await ethClient.sendTransaction(
+          key,
+          Transaction.callContract(
+              contract: contract, function: function, parameters: []),
+          chainId: 11155111);
     });
+
+    // deploySafe();
+
+    // Future.delayed(const Duration(seconds: 20), () {
+    //   getContractContents();
+    // });
   }
 
   Future<void> deploySafe() async {
@@ -358,9 +371,9 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
             contract: contract, function: function, parameters: []),
         chainId: 11155111);
 
-    Future.delayed(const Duration(seconds: 20), () {
-      getContractContents();
-    });
+    // Future.delayed(const Duration(seconds: 20), () {
+    //   getContractContents();
+    // });
   }
 
   final TextEditingController _controller = new TextEditingController();
