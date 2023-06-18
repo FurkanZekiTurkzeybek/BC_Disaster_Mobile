@@ -15,6 +15,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MaterialApp(
+    theme: ThemeData(
+      fontFamily: 'iAWriterDuoS',
+    ),
     debugShowCheckedModeBanner: false,
     title: "randomTitle",
     home: EntryPage(),
@@ -46,26 +49,26 @@ class EntryPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () => {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => RegisterPage()))
                 },
-                child: const Text('Register'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),
+                child: const Text('Register'),
               ),
               ElevatedButton(
                 onPressed: () => {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()))
                 },
-                child: const Text('Log In'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),
+                child: const Text('Log In'),
               ),
             ],
           ),

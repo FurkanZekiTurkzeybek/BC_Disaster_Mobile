@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'iAWriterDuoS',
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'HelpChain'),
@@ -214,7 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             backgroundColor: statusBool[statusIndex]
                 ? Colors.blue
-                : statusButtonColours[statusIndex]?.withOpacity(0.7),
+                : statusButtonColours[statusIndex]?.withOpacity(0.999999999),
           ),
           child: Text(statusText[statusIndex],
               style: const TextStyle(
