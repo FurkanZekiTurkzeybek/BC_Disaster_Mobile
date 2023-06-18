@@ -68,72 +68,78 @@ class _RegisterPageState extends State<RegisterPage> {
                 setState(() {
                   _name = value;
                 });
-              }),
+              }, r'[a-zA-Z]', _controllers[0]),
               buildRegisterTextField("Surname", (value) {
                 setState(() {
                   _surname = value;
                 });
-              }),
+              }, r'[a-zA-Z]', _controllers[1]),
               buildRegisterTextField("Address", (value) {
                 setState(() {
                   _address = value;
                 });
-              }),
+              }, r'.*', _controllers[2]),
               buildRegisterTextField("SSN", (value) {
                 setState(() {
                   _ssn = value;
                 });
-              }),
+              }, r'[0-9]', _controllers[3]),
               buildRegisterTextField("Password", (value) {
                 setState(() {
                   _password = value;
                 });
-              }),
-              SizedBox(height: 16.0),
+              }, r'.*', _controllers[4]),
+              const SizedBox(height: 16.0),
               Padding(
                 padding: const EdgeInsets.only(left: 35, right: 35, top: 20),
                 child: ElevatedButton(
                   onPressed: () async {
-                    bool SSNnotFound =
-                        await widget.thisFirebase.checkIfSSNExists(_ssn);
+                    if (_validateFields() == true) {
+                      bool SSNnotFound =
+                          await widget.thisFirebase.checkIfSSNExists(_ssn);
 
-                    if (SSNnotFound == false) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MyApp()));
-                      Person person = Person(
-                        hash: "",
-                        name: _name,
-                        surname: _surname,
-                        address: _address,
-                        ssn: _ssn,
-                        password: _password,
-                      );
-                      final url = Uri.parse('http://10.0.2.2:3000/api/person');
-                      final response = await HTTP.post(
-                        url,
-                        headers: {'Content-Type': 'application/json'},
-                        body: json.encode({
-                          'name': person.name,
-                          'surname': person.surname,
-                          'address': person.address,
-                          'ssn': person.ssn,
-                          'password': person.password
-                        }),
-                      );
+                      if (SSNnotFound == false) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyApp()));
+                        Person person = Person(
+                          hash: "",
+                          name: _name,
+                          surname: _surname,
+                          address: _address,
+                          ssn: _ssn,
+                          password: _password,
+                        );
+                        final url =
+                            Uri.parse('http://10.0.2.2:3000/api/person');
+                        final response = await HTTP.post(
+                          url,
+                          headers: {'Content-Type': 'application/json'},
+                          body: json.encode({
+                            'name': person.name,
+                            'surname': person.surname,
+                            'address': person.address,
+                            'ssn': person.ssn,
+                            'password': person.password
+                          }),
+                        );
 
-                      if (response.statusCode == 200) {
-                        // hash = response.body;
-                        // print('Person saved successfully!');
-                        // print(hash);
-                        await writeFile(response.body.toString());
+                        if (response.statusCode == 200) {
+                          // hash = response.body;
+                          // print('Person saved successfully!');
+                          // print(hash);
+                          await writeFile(response.body.toString());
+                        } else {
+                          print(
+                              'Failed to save person: ${response.statusCode}');
+                        }
                       } else {
-                        print('Failed to save person: ${response.statusCode}');
+                        //print a box that informs the user.
+                        print("The SSN is already exists");
                       }
                     } else {
-                      //print a box that informs the user.
-                      print("The SSN is already exists");
+                      print("You need to fill all the input fields");
                     }
                   },
                   child: const Text(style: TextStyle(fontSize: 25), 'Register'),
@@ -149,11 +155,38 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  //Input validation starts here
+  final List<TextEditingController> _controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
+
+  bool _validateFields() {
+    for (var controller in _controllers) {
+      if (controller.text.isEmpty) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //Input validation ends here
+
   Padding buildRegisterTextField(
-      String labelText, Function(String) onChangedCallback) {
+      String labelText,
+      Function(String) onChangedCallback,
+      String restriction,
+      TextEditingController controllerListIndex) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        controller: controllerListIndex,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(restriction)),
+        ],
         onChanged: onChangedCallback,
         style: const TextStyle(color: Colors.white),
         cursorColor: Colors.white,

@@ -363,6 +363,16 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
     });
   }
 
+  final TextEditingController _controller = new TextEditingController();
+
+  bool _validateTheChangedAddress() {
+    if (_controller.text.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -389,6 +399,10 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        controller: _controller,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'.*')),
+                        ],
                         onChanged: (value) {
                           setState(() {
                             _newAddress = value;
@@ -421,7 +435,11 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
                           backgroundColor: Colors.grey,
                         ),
                         onPressed: () async {
-                          deploy(_newAddress);
+                          if (_validateTheChangedAddress() == true) {
+                            deploy(_newAddress);
+                          } else {
+                            print("You need to fill the text-field");
+                          }
                         },
                         child: const Text(
                             style: TextStyle(fontSize: 25), 'Update'),

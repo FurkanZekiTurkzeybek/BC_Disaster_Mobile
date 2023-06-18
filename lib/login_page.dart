@@ -1,6 +1,7 @@
 import 'package:dapp/register_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -87,6 +88,9 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        ],
         onChanged: onChangedCallback,
         style: const TextStyle(color: Colors.white),
         cursorColor: Colors.white,
