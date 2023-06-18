@@ -1,4 +1,3 @@
-
 import 'package:dapp/register_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'dart:io';
 
 import 'firebase_methods.dart';
 import 'main.dart';
-
 
 class LoginPage extends StatefulWidget {
   FirebaseInit thisFirebase = new FirebaseInit();
@@ -55,23 +53,27 @@ class _LoginPageState extends State<LoginPage> {
                 });
               }),
               SizedBox(height: 16.0),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+              Padding(
+                padding: const EdgeInsets.only(left: 35, right: 35),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                  ),
+                  onPressed: () async {
+                    Person userPerson = await widget.thisFirebase
+                        .checkIfCorrect(_SSN, _password);
+                    if (userPerson != null) {
+                      writeFile(userPerson);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()));
+                    } else {
+                      print("There are no such accounts");
+                    }
+                  },
+                  child: const Text(style: TextStyle(fontSize: 25),'Log In'),
                 ),
-                onPressed: () async {
-                  Person userPerson =
-                      await widget.thisFirebase.checkIfCorrect(_SSN, _password);
-                  if (userPerson!=null) {
-                    writeFile(userPerson);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MyApp()));
-                  }
-                  else {
-                    print("There are no such accounts");
-                  }
-                },
-                child: const Text('Log In'),
               ),
             ],
           ),
@@ -123,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.white,
             ),
             border:
-            OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.white),
               // Set the desired border color when focused
@@ -139,5 +141,3 @@ Future<void> writeFile(Person thisUser) async {
   final file = File("${directory.path}/file.txt");
   await file.writeAsString(thisUser.hash);
 }
-
-

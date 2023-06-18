@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart' as FB;
+import 'package:dapp/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'entry_page.dart';
 import 'firebase_options.dart';
 import 'firebase_methods.dart';
 
@@ -41,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 const List<String> statusText = <String>[
-  ("In distress"),
+  ("In Distress"),
   ("Need Help"),
   ("Safe")
 ];
@@ -153,6 +155,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black54,
+        title: const Text('Log In'),
+        leading: InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => EntryPage()));
+          },
+          child: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
+      ),
+      // resizeToAvoidBottomInset: false,
       body: DecoratedBox(
         decoration: const BoxDecoration(
             image: DecorationImage(
@@ -160,15 +176,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Expanded(
           child: Column(
             children: [
-              const SizedBox(height: 100),
               const Padding(
-                padding: EdgeInsets.only(bottom: 85),
+                padding: EdgeInsets.only(bottom: 60, top: 25),
                 child: Text(
-                  'Your Status',
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey),
+                  'CURRENT STATUS',
+                  style: TextStyle(fontSize: 40, color: Colors.blueGrey),
                 ),
               ),
               Center(
@@ -178,19 +190,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     returnStatusBox(0),
                     returnStatusBox(1),
                     returnStatusBox(2),
-                    ElevatedButton(
-                        onPressed: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ChangeAddressWidget(
-                                            title: 'Change Address',
-                                          )))
-                            },
-                        child: const Text("Change Address"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
-                        ))
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 35, right: 35, top: 20),
+                      child: ElevatedButton(
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ChangeAddressWidget(
+                                              title: 'Change Address',
+                                            )))
+                              },
+                          child: const Text(
+                              style: TextStyle(fontSize: 20), "Change Address"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                          )),
+                    )
                   ],
                 ),
               ),
@@ -219,7 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           child: Text(statusText[statusIndex],
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 25,
               )),
         ),
       ),
@@ -394,14 +412,20 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
                             )),
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
+                    Container(
+                      width: double.infinity, // Button width takes full width
+                      padding:
+                          const EdgeInsets.only(left: 35, right: 35, top: 10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                        ),
+                        onPressed: () async {
+                          deploy(_newAddress);
+                        },
+                        child: const Text(
+                            style: TextStyle(fontSize: 25), 'Update'),
                       ),
-                      onPressed: () async {
-                        deploy(_newAddress);
-                      },
-                      child: const Text('Change'),
                     ),
                   ]),
                 ),

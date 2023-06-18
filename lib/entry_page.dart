@@ -31,44 +31,111 @@ void main() async {
 }
 
 class EntryPage extends StatelessWidget {
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     // appBar: AppBar(
+  //     //   backgroundColor: Colors.black54,
+  //     //   title: Text('Register'),
+  //     // ),
+  //     // resizeToAvoidBottomInset: false,
+  //     body: DecoratedBox(
+  //       decoration: const BoxDecoration(
+  //           image: DecorationImage(
+  //               image: AssetImage("assets/images/crop.jpg"), fit: BoxFit.fill)),
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(16.0),
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           crossAxisAlignment: CrossAxisAlignment.stretch,
+  //           children: [
+  //             const SizedBox(height: 16.0),
+  //             ElevatedButton(
+  //               onPressed: () => {
+  //                 Navigator.push(context,
+  //                     MaterialPageRoute(builder: (context) => LoginPage()))
+  //               },
+  //               style: ElevatedButton.styleFrom(
+  //                 backgroundColor: Colors.grey,
+  //               ),
+  //               child: const Text(style: TextStyle(
+  //                 fontSize: 25
+  //               ),'Log In'),
+  //             ),
+  //             ElevatedButton(
+  //               onPressed: () => {
+  //                 Navigator.push(context,
+  //                     MaterialPageRoute(builder: (context) => RegisterPage()))
+  //               },
+  //               style: ElevatedButton.styleFrom(
+  //                 backgroundColor: Colors.grey,
+  //               ),
+  //               child: const Text(style: TextStyle(
+  //                   fontSize: 25
+  //               ),'Register'),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.black54,
-      //   title: Text('Register'),
-      // ),
-      // resizeToAvoidBottomInset: false,
       body: DecoratedBox(
         decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/crop.jpg"), fit: BoxFit.fill)),
+          image: DecorationImage(
+            image: AssetImage("assets/images/crop.jpg"),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(35.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () => {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()))
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+              Container(
+                width: double.infinity, // Button width takes full width
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey,
+                    padding: const EdgeInsets.all(16.0),
+                  ),
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ),
-                child: const Text('Register'),
               ),
-              ElevatedButton(
-                onPressed: () => {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()))
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+              SizedBox(height: 8.0),
+              Container(
+                width: double.infinity, // Button width takes full width
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey,
+                    padding: const EdgeInsets.all(16.0),
+                  ),
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ),
-                child: const Text('Log In'),
               ),
             ],
           ),
@@ -76,4 +143,5 @@ class EntryPage extends StatelessWidget {
       ),
     );
   }
+
 }

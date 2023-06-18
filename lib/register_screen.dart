@@ -90,51 +90,56 @@ class _RegisterPageState extends State<RegisterPage> {
                 });
               }),
               SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () async {
-                  bool SSNnotFound =
-                      await widget.thisFirebase.checkIfSSNExists(_ssn);
+              Padding(
+                padding: const EdgeInsets.only(left: 35, right: 35, top: 20),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    bool SSNnotFound =
+                        await widget.thisFirebase.checkIfSSNExists(_ssn);
 
-                  if (SSNnotFound == false) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MyApp()));
-                    Person person = Person(
-                      hash: "",
-                      name: _name,
-                      surname: _surname,
-                      address: _address,
-                      ssn: _ssn,
-                      password: _password,
-                    );
-                    final url = Uri.parse('http://10.0.2.2:3000/api/person');
-                    final response = await HTTP.post(
-                      url,
-                      headers: {'Content-Type': 'application/json'},
-                      body: json.encode({
-                        'name': person.name,
-                        'surname': person.surname,
-                        'address': person.address,
-                        'ssn': person.ssn,
-                        'password': person.password
-                      }),
-                    );
+                    if (SSNnotFound == false) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()));
+                      Person person = Person(
+                        hash: "",
+                        name: _name,
+                        surname: _surname,
+                        address: _address,
+                        ssn: _ssn,
+                        password: _password,
+                      );
+                      final url = Uri.parse('http://10.0.2.2:3000/api/person');
+                      final response = await HTTP.post(
+                        url,
+                        headers: {'Content-Type': 'application/json'},
+                        body: json.encode({
+                          'name': person.name,
+                          'surname': person.surname,
+                          'address': person.address,
+                          'ssn': person.ssn,
+                          'password': person.password
+                        }),
+                      );
 
-                    if (response.statusCode == 200) {
-                      // hash = response.body;
-                      // print('Person saved successfully!');
-                      // print(hash);
-                      await writeFile(response.body.toString());
+                      if (response.statusCode == 200) {
+                        // hash = response.body;
+                        // print('Person saved successfully!');
+                        // print(hash);
+                        await writeFile(response.body.toString());
+                      } else {
+                        print('Failed to save person: ${response.statusCode}');
+                      }
                     } else {
-                      print('Failed to save person: ${response.statusCode}');
+                      //print a box that informs the user.
+                      print("The SSN is already exists");
                     }
-                  } else {
-                    //print a box that informs the user.
-                    print("The SSN is already exists");
-                  }
-                },
-                child: const Text('Register'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
+                  },
+                  child: const Text(style: TextStyle(fontSize: 25), 'Register'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                  ),
                 ),
               ),
             ],
