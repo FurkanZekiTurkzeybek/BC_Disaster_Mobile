@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   _password = value;
                 });
               }),
-              const SizedBox(height: 16.0),
+              SizedBox(height: 16.0),
               Padding(
                 padding: const EdgeInsets.only(left: 35, right: 35),
                 child: ElevatedButton(

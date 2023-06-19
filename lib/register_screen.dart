@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 setState(() {
                   _name = value;
                 });
-              }, r'[a-zA-Z ]', _controllers[0]),
+              }, r'[a-zA-Z]', _controllers[0]),
               buildRegisterTextField("Surname", (value) {
                 setState(() {
                   _surname = value;
@@ -134,7 +134,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           print(
                               'Failed to save person: ${response.statusCode}');
                         }
+                      } else {
+                        //print a box that informs the user.
+                        print("The SSN is already exists");
                       }
+                    } else {
+                      print("You need to fill all the input fields");
                     }
                   },
                   child: const Text(style: TextStyle(fontSize: 25), 'Register'),
