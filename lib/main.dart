@@ -352,9 +352,9 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
 
     // deploySafe();
 
-    Future.delayed(const Duration(seconds: 20), () {
-      getContractContents();
-    });
+    // Future.delayed(const Duration(seconds: 20), () {
+    //   getContractContents();
+    // });
   }
 
   Future<void> deploySafe() async {
