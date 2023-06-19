@@ -147,9 +147,9 @@ class _MyHomePageState extends State<MyHomePage> {
             contract: contract, function: function, parameters: []),
         chainId: 11155111);
 
-    // Future.delayed(const Duration(seconds: 20), () {
-    //   getContractContents();
-    // });
+    Future.delayed(const Duration(seconds: 20), () {
+      getContractContents();
+    });
   }
 
   @override
@@ -265,9 +265,9 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
   late Web3Client ethClient;
 
   final String myAddress =
-      "0x1cEDc507F8478ECAc0fc6b710c8C039050AD0aa8"; // Metamask wallet
+      "0xfF266b4A997E30C195C5521819b8E75baEB7b8a1"; // Metamask wallet
   final String bcURL =
-      "https://sepolia.infura.io/v3/1670a51d46d74984873f6a273c285335";
+      "https://sepolia.infura.io/v3/2af035557b3b4dcd9f3278edb7eb7453";
 
   var name = "Name";
   var surname = "Surname";
@@ -352,9 +352,9 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
 
     // deploySafe();
 
-    // Future.delayed(const Duration(seconds: 20), () {
-    //   getContractContents();
-    // });
+    Future.delayed(const Duration(seconds: 20), () {
+      getContractContents();
+    });
   }
 
   Future<void> deploySafe() async {
