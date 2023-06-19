@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 setState(() {
                   _name = value;
                 });
-              }, r'[a-zA-Z]', _controllers[0]),
+              }, r'[a-zA-Z ]', _controllers[0]),
               buildRegisterTextField("Surname", (value) {
                 setState(() {
                   _surname = value;
