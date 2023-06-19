@@ -226,7 +226,9 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
-          onPressed: () => deploy(statusIndex),
+          onPressed: () {
+            deploy(statusIndex);
+          },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24.0),
@@ -332,29 +334,25 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
 
     ContractFunction function = contract.function("setHomeAddress");
 
-    await ethClient
-        .sendTransaction(
-            key,
-            Transaction.callContract(
-                contract: contract,
-                function: function,
-                parameters: [newAddress]),
-            chainId: 11155111)
-        .then((value) async {
-      ContractFunction function = contract.function("setSafe");
+    await ethClient.sendTransaction(
+        key,
+        Transaction.callContract(
+            contract: contract, function: function, parameters: [newAddress]),
+        chainId: 11155111);
 
-      await ethClient.sendTransaction(
-          key,
-          Transaction.callContract(
-              contract: contract, function: function, parameters: []),
-          chainId: 11155111);
-    });
+    function = contract.function("setSafe");
+
+    await ethClient.sendTransaction(
+        key,
+        Transaction.callContract(
+            contract: contract, function: function, parameters: []),
+        chainId: 11155111);
 
     // deploySafe();
 
-    // Future.delayed(const Duration(seconds: 20), () {
-    //   getContractContents();
-    // });
+    Future.delayed(const Duration(seconds: 20), () {
+      getContractContents();
+    });
   }
 
   Future<void> deploySafe() async {
@@ -450,8 +448,6 @@ class _ChangeAddressWidgetState extends State<ChangeAddressWidget> {
                         onPressed: () async {
                           if (_validateTheChangedAddress() == true) {
                             deploy(_newAddress);
-                          } else {
-                            print("You need to fill the text-field");
                           }
                         },
                         child: const Text(
